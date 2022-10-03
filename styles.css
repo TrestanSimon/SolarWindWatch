@@ -1,0 +1,51 @@
+body {
+    background-color:#050505;
+}
+
+p {
+    z-index: 4;
+    margin-top: 0px;
+}
+
+button {
+    background-color:#050505;
+    border-color:gray;
+    color:gray;
+}
+
+#title {
+    color:grey;
+    font: 60px Sans-Serif;
+    text-align: center;
+    width: 100%;
+    top: 20px;
+}
+
+p.label {
+    color:grey;
+    font: 30px Sans-Serif;
+}
+
+#density {
+    left: 33%;
+}
+
+#speed {
+    top: 10px;
+}
+
+#small {
+    color:grey;
+    font: 60px Sans-Serif;
+    text-align: center;
+}
+
+canvas.gauge {
+    width: 400;
+    height: 200;
+}
+
+#hide {
+    right: 10;
+    top: 10;
+}
