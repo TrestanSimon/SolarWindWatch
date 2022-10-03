@@ -79,11 +79,37 @@ $(document).ready(function() {
     ctx.fillStyle = bg;
     ctx.fillRect(0,0,w,h);
 
-    // Bow Shock
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
-    ctx.lineWidth = w/200;
+    // Bubble
+    ctx.strokeStyle = "rgba(255, 20, 0, 0.2)";
+    ctx.lineWidth = w/100;
     ctx.ellipse(w, h/2, bow_x, bow_y, 0, 0, 2*Math.PI);
     ctx.stroke();
+    ctx.closePath();
+    ctx.beginPath();
+
+    // Bow Shock
+    ctx.fillStyle = "rgba(255, 20, 0, 0.08)";
+    ctx.ellipse(w, h/2, bow_x, bow_y, 0, 0, 2*Math.PI);
+    ctx.fill();
+    ctx.closePath();
+    ctx.beginPath();
+
+    // Lobes
+    ctx.ellipse(w/2 - w/10, h/2, w/10, w/8, 0, 0, 2*Math.PI);
+    ctx.fill();
+    ctx.closePath();
+    ctx.beginPath();
+    ctx.ellipse(w/2 - w/14, h/2, w/14, w/14, 0, 0, 2*Math.PI);
+    ctx.fill();
+    ctx.closePath();
+    ctx.beginPath();
+
+    ctx.ellipse(w/2 + w/2, h/2, w/2, w/4, 0, 0, 2*Math.PI);
+    ctx.fill();
+    ctx.closePath();
+    ctx.beginPath();
+    ctx.ellipse(w/2 + w/2, h/2, w/2, w/6, 0, 0, 2*Math.PI);
+    ctx.fill();
     ctx.closePath();
     ctx.beginPath();
 
@@ -117,17 +143,28 @@ $(document).ready(function() {
 
   // Update data
   function UpdateData() {
-    var plasmaAPI = "https://services.swpc.noaa.gov/products/solar-wind/plasma-5-minute.json";
+    var plasmaAPI = "https://services.swpc.noaa.gov/products/solar-wind/plasma-6-hour.json";
     $.getJSON(plasmaAPI, function(data) {
-      plasma_t = data[data.length - 1][0];
-      plasma_rho = data[data.length-1][1];
-      plasma_speed = data[data.length - 1][2];
-      plasma_temp = data[data.length - 1][3];
+      var is_null = true;
+      var count = 1;
+      while (is_null == true) {
+        plasma_rho = data[data.length - count][1];
+        if (plasma_rho == null) {
+          count++;
+        } else {
+          is_null = false;
+          plasma_t = data[data.length - count][0];
+          plasma_rho = data[data.length - count][1];
+          plasma_speed = data[data.length - count][2];
+          plasma_temp = data[data.length - count][3];
+        }
+      }
 
-      wind_rho = Math.max(30, 400 + Math.floor(400 * Math.log10(plasma_rho + 1)) / (w/1000));
-      wind_speed = 20 * (plasma_speed - 200)/600 * (w/2000);
+      wind_rho = Math.floor(Math.max(20, 10* plasma_rho) / (w/500));
+      wind_speed = 20 * (plasma_speed + 200)/600 * (w/2000);
 
       CreateGauge();
+      UpdatePosition();
     });
   }
 
@@ -140,7 +177,7 @@ $(document).ready(function() {
       pointer: {
         length: 0.6,
         strokeWidth: 0.05,
-        color: '#808080'
+        color: '#606060'
       },
       staticLabels: {
         font: "12px sans-serif",
@@ -258,10 +295,10 @@ $(document).ready(function() {
 
       wind_color = Math.min(255, 60 + 195 * (Math.log10(plasma_temp)-4)/2);
       if (wind_color == NaN) {
-        wind_color = "Blue";
+        wind_color = "white";
       }
       ctx.fillStyle = "rgb(" + wind_color + "," + wind_color + "," + wind_color + ")";
-      ctx.fillRect(wind_arr[i].x, wind_arr[i].y, 2, 2);
+      ctx.fillRect(wind_arr[i].x, wind_arr[i].y, 3, 3);
     }
   }
 })
