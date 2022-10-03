@@ -1,0 +1,9 @@
+{
+    "name": "spaceweatherwatch",
+    "version": "1.0.0",
+    "main": "index.html",
+    "dependencies": {
+      "jquery": "^2.1.3",
+      "gauge.js": "~1.3.7"
+    }
+}
