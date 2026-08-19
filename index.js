@@ -143,7 +143,7 @@ $(document).ready(function() {
 
   // Update data
   function UpdateData() {
-    var plasmaAPI = "https://services.swpc.noaa.gov/products/solar-wind/plasma-6-hour.json";
+    var plasmaAPI = "https://services.swpc.noaa.gov/products/geospace/propagated-solar-wind-1-hour.json";
     $.getJSON(plasmaAPI, function(data) {
       var is_null = true;
       var count = 1;
@@ -154,8 +154,8 @@ $(document).ready(function() {
         } else {
           is_null = false;
           plasma_t = data[data.length - count][0];
-          plasma_rho = data[data.length - count][1];
-          plasma_speed = data[data.length - count][2];
+          plasma_rho = data[data.length - count][2];
+          plasma_speed = data[data.length - count][1];
           plasma_temp = data[data.length - count][3];
         }
       }
